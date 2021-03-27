@@ -17,17 +17,17 @@ import java.awt.event.ActionListener;
 public class ButtonActionListener implements ActionListener {
     private ImagePanel imagePanel;
     private StoryPanel storyPanel;
+    private ChoicePanel choicePanel;
+
     //Статус по нажатию
-    private GameStatus gameStatus;
 
-    private String imagePath;
-    private String storyText;
+    private GameStatus gameStatus = GameStatus.START;
 
-    public ButtonActionListener(ImagePanel imagePanel, StoryPanel storyPanel, String imagePath, String storyText) {
+    public ButtonActionListener(ImagePanel imagePanel, StoryPanel storyPanel, ChoicePanel choicePanel, GameStatus gameStatus) {
         this.imagePanel = imagePanel;
         this.storyPanel = storyPanel;
-        this.imagePath = imagePath;
-        this.storyText = storyText;
+        this.choicePanel = choicePanel;
+        this.gameStatus = gameStatus;
     }
 
     public ButtonActionListener(ImagePanel imagePanel, StoryPanel storyPanel, GameStatus gameStatus) {
@@ -38,10 +38,12 @@ public class ButtonActionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         for (GameTurn turn : StoryInitializer.turns) {
             if (turn.getGameStatus() == gameStatus) {
                 imagePanel.setImage("resources/" + turn.getImagePath());
                 storyPanel.changeText(turn.getStoryText());
+                choicePanel.fillButtons(turn.getChoices());
                 break;
             }
         }
